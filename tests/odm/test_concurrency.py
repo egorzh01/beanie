@@ -32,4 +32,7 @@ class TestConcurrency:
                 return docs
 
             await asyncio.gather(*[insert_find() for _ in range(10)])
+
         await SampleModel2.delete_all()
+
+        [client.close() for client in clients]

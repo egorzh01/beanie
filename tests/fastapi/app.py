@@ -26,6 +26,7 @@ async def live_span(_: FastAPI):
         client.beanie_db,
         document_models=[House, Person, HouseAPI, WindowAPI, DoorAPI, RoofAPI],
     )
+
     yield
 
 

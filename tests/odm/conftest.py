@@ -297,6 +297,15 @@ async def session(cli):
     await s.end_session()
 
 
+@pytest.fixture
+def recwarn_always(recwarn):
+    warnings.simplefilter("always")
+    # ResourceWarnings about unclosed sockets can occur nondeterministically
+    # (during GC) which throws off the tests
+    warnings.simplefilter("ignore", ResourceWarning)
+    return recwarn
+
+
 @pytest.fixture()
 async def deprecated_init_beanie(db):
     for model in TESTING_MODELS:  # crude clear from init
