@@ -18,10 +18,12 @@ class SampleModel3(SampleModel2): ...
 
 class TestConcurrency:
     async def test_without_init(self, settings):
+        clients = []
         for i in range(10):
-            cli = AsyncMongoClient(settings.mongodb_dsn)
-            cli.get_io_loop = asyncio.get_running_loop
-            db = cli[settings.mongodb_db_name]
+            client = AsyncMongoClient(settings.mongodb_dsn)
+            client.get_io_loop = asyncio.get_running_loop
+            clients.append(client)
+            db = client[settings.mongodb_db_name]
             await init_beanie(
                 db, document_models=[SampleModel3, SampleModel, SampleModel2]
             )
